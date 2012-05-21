@@ -1,0 +1,23 @@
+#!/bin/zsh
+set -e
+if [[ $1 == "-c" ]];then
+    clean=yes
+    shift
+fi
+if [[ -z $@ ]];then
+    DIRS=( /opt/stack /opt/stack/GIT )
+else
+    DIRS=$@
+fi
+
+for dir in ${DIRS};do
+    cd ${dir}
+    for gitdir in *(/);do
+        [[ -d ${gitdir}/.git/ ]] || continue
+        pushd ${gitdir}/$d >/dev/null;
+            branch=${${"$(<.git/HEAD)"#ref: }#refs/heads/}
+            [[ ${branch} == master ]] && cmd="pull" || cmd="fetch"
+            git ${cmd} origin master
+        popd >/dev/null
+    done
+done
