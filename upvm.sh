@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-mkdir -p ${HOME}/.config/rackspace-cloud/
+mkdir -p ~stack/.config/rackspace-cloud/
 cat <<EOF>${HOME}/.config/rackspace-cloud/config
 RCLOUD_API_USER=\${UK_RCLOUD_USER}
 RCLOUD_API_KEY=\${UK_RCLOUD_KEY}
