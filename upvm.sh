@@ -2,7 +2,7 @@
 set -e
 
 mkdir -p ~stack/.config/rackspace-cloud/
-cat <<EOF>${HOME}/.config/rackspace-cloud/config
+cat <<EOF>~stack/.config/rackspace-cloud/config
 RCLOUD_API_USER=\${UK_RCLOUD_USER}
 RCLOUD_API_KEY=\${UK_RCLOUD_KEY}
 AUTH_SERVER=\${UK_RCLOUD_AURL}
