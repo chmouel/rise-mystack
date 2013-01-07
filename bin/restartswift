@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+SWIFT_DATA_DIR=/opt/stack/data/swift
+
+swift-init all stop || true
+pkill -9 -f swift- || true
+
+if egrep -q ${SWIFT_DATA_DIR}/drives/sdb1 /proc/mounts;then
+    sudo umount -f ${SWIFT_DATA_DIR}/drives/sdb1
+fi
+
+mkfs.xfs -f -i size=1024 ${SWIFT_DATA_DIR}/drives/images/swift.img
+sudo mount -t xfs -o loop,noatime,nodiratime,nobarrier,logbufs=8 ${SWIFT_DATA_DIR}/drives/images/swift.img ${SWIFT_DATA_DIR}/drives/sdb1
+
+swift-init all start
+swift-init proxy stop
+
+cd ~/devstack
+exec screen -e \`1 -c ./stack-screenrc
