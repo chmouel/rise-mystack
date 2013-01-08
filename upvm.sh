@@ -35,6 +35,6 @@ chown -R stack: ~stack/GIT /opt/stack
 
 apt-get -y install python-pip ipython
 
-for i in git-review flake8;do
+for i in tox git-review flake8;do
      pip install -U ${i}
 done
