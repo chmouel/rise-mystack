@@ -20,6 +20,7 @@ cd ~stack/.vim
 git submodule update --init
 
 # Install scripts from p.chmouel.com
+mkdir -p ~stack/bin
 cd ~stack/bin
 for i in ks restartswift;do
     curl -O http://p.chmouel.com/bin/${i}
