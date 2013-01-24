@@ -79,7 +79,7 @@ scp -q ${MYDIR}/upvm.sh stack@${SERVER_NAME}:/tmp
 ssh -t -q stack@${SERVER_NAME} "sudo bash /tmp/upvm.sh"
 ssh -t -q stack@${SERVER_NAME} "grep -qrw 'devstack$' /etc/hosts || sudo sed -i '/${SHORT_SERVER_NAME}/ { s/$/ ${SHORT_SERVER_NAME}/ }' /etc/hosts;mkdir -p bin/"
 
-scp -q ${MYDIR}/localrc stack@${SERVER_NAME}:devstack/localrc
+scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
 
 ssh stack@${SERVER_NAME} "echo HOST_IP=${NEWIP}|tee -a devstack/localrc >/dev/null"

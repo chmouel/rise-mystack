@@ -31,8 +31,8 @@ chmod +x ~stack/bin/*
 apt-get -y install python-pip ipython htop
 
 # PIP installage.
-for i in tox git-review flake8;do
-     pip install -U ${i}
+for i in tox testrepository coverage git-review flake8;do
+     pip install --upgrade ${i}
 done
 
 # Checkout
