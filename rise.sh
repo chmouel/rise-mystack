@@ -39,11 +39,20 @@ function delete_server() {
 }
 
 function create_server() {
-    delete_server
     nova boot --poll --flavor ${FLAVOR_ID} --image ${IMAGE_ID} ${SERVER_NAME}
 }
 
-create_server
+function rebuild_server() {
+    ID=$(nova list --name "^${SERVER_NAME}$"|awk "/${SERVER_NAME}/ {print \$2}")
+    if [[ -n ${ID} ]];then
+        nova rebuild --poll ${ID} ${IMAGE_ID}
+    else
+       create_server
+    fi
+}
+
+rebuild_server
+
 NEWID=$(nova list --status ACTIVE --name "^${SERVER_NAME}$"|awk "/${SERVER_NAME}/ {print \$2}")
 if [[ -z ${NEWID} ]];then
     echo "Error while creating server"
