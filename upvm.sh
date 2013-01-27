@@ -23,12 +23,12 @@ git submodule update --init
 mkdir -p ~stack/bin
 cd ~stack/bin
 for i in ks restartswift;do
-    curl -O http://p.chmouel.com/bin/${i}
+    curl -O http://p.chmouel.com/${i}
 done
 chmod +x ~stack/bin/*
 
 # Install dev tools
-apt-get -y install python-pip ipython htop
+apt-get -y install python-pip ipython htop build-essential
 
 # PIP installage.
 for i in tox testrepository coverage git-review flake8;do
