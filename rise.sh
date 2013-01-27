@@ -7,7 +7,7 @@ function readlink { [[ $1 == "-f" ]] && shift; [[ -z $1 ]] && return;python -c '
 SERVER_NAME=${1:-devstack.rackspaceclouduk.com}
 SHORT_SERVER_NAME=${SERVER_NAME%%.*}
 DOMAIN_NAME=${SERVER_NAME#*.}
-IMAGE_NAME=risedevstack.rackspaceclouduk.com
+IMAGE_NAME=${2:-risedevstack.rackspaceclouduk.com}
 FLAVOR_ID=4
 MAX_WAIT=30
 
