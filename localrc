@@ -1,4 +1,4 @@
-# -*- Mode: sh -*-
+# -*- Mode: shell-script -*-
 ADMIN_PASSWORD=ADMIN
 KEYSTONE_TOKEN_FORMAT=UUID
 #ENABLED_SERVICES="${ENABLED_SERVICES},swift"
