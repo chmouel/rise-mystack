@@ -13,6 +13,7 @@ alias so_os_admin="pushd ~/devstack >/dev/null && source openrc admin admin && p
 alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
 alias inst="sudo apt-get -y install"
 alias remove="sudo apt-get -y remove"
+alias u="upcs -cpublic"
 
 function gd() {
     arg=$1
