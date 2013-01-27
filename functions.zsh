@@ -14,22 +14,6 @@ alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
 alias inst="sudo apt-get -y install"
 alias remove="sudo apt-get -y remove"
 
-#TOREMOVE
-alias nova="nova --no_cache"
-
-function ks() {
-    [[ -z $@ ]] && {
-        command ks localhost admin ADMIN
-        return $?
-    }
-    command ks $@
-}
-
-function adminos() {
-    export OS_USERNAME=admin
-    export OS_TENANTNAME=admin
-}
-
 function gd() {
     arg=$1
 
