@@ -1,3 +1,4 @@
+# -*- Mode: shell-script -*-
 userColor="green"
 hostColor="green"
 
