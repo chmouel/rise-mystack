@@ -91,4 +91,4 @@ ssh -t -q stack@${SERVER_NAME} "grep -qrw 'devstack$' /etc/hosts || sudo sed -i 
 scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
 
-ssh stack@${SERVER_NAME} "echo HOST_IP=${NEWIP}|tee -a devstack/localrc >/dev/null"
+ssh stack@${SERVER_NAME} "echo HOST_IP=${NEWIP}|tee -a devstack/localrc >/dev/null;chmod +x devstack/local.sh"
