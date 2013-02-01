@@ -6,7 +6,6 @@ export UK_RCLOUD_USER=@UK_RCLOUD_USER@
 export UK_RCLOUD_KEY=@UK_RCLOUD_KEY@
 export UK_RCLOUD_AURL=https://lon.auth.api.rackspacecloud.com/v1.0
 
-alias g="git grep"
 alias -g MJ="|python -mjson.tool"
 alias -g SP="|curl -F 'sprunge=<-' http://sprunge.us"
 alias so_os="pushd ~/devstack >/dev/null && source openrc && popd >/dev/null"
