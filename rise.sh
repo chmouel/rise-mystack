@@ -72,7 +72,7 @@ ${MYDIR}/updatedomain.py ${DOMAIN_NAME} ${SHORT_SERVER_NAME} ${NEWIP} || :
 if egrep -q "Host ${SERVER_NAME} ${SHORT_SERVER_NAME}$" ${HOME}/.ssh/config;then
    sed -i~ "/Host ${SERVER_NAME} ${SHORT_SERVER_NAME}$/,/Host|$/ { s/Hostname.*/Hostname ${NEWIP}/;}" ${HOME}/.ssh/config
 else
-    echo -e "Host ${SERVER_NAME} ${SHORT_SERVER_NAME}\n    Hostname ${NEWIP}\n" > /tmp/.sshconfig.$$
+    echo -e "Host ${SERVER_NAME} ${SHORT_SERVER_NAME}\n    Hostname ${NEWIP}\nUser stack\n" > /tmp/.sshconfig.$$
     cat ~/.ssh/config >> /tmp/.sshconfig.$$
     cp -f ~/.ssh/config ~/.ssh/config~
     cp -f /tmp/.sshconfig.$$ ~/.ssh/config
