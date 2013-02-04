@@ -4,6 +4,9 @@ set -e
 # Enable port
 ufw allow 80
 
+# Update APT
+apt-get update --fix-missing
+
 # Update git
 for gitdir in ~stack/GIT ~stack;do
     cd ${gitdir}
