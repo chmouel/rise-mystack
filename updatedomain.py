@@ -23,6 +23,7 @@ UK_RCLOUD_KEY="bar"
 import clouddns
 import os
 import sys
+import argparse
 
 #Need to setup to your region
 REGION = os.environ.get("RCLOUD_REGION", "US")
@@ -59,21 +60,23 @@ def auth():
             authurl=clouddns.consts.uk_authurl)
     raise InvalidRegion(REGION)
 
-args = sys.argv[1:]
-if not args or len(args) < 2:
-    print "%s: record newip" % (os.path.basename(sys.argv[0]))
-    sys.exit(0)
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', action='store_true', default=False,
+                    dest='ipv6',
+                    help='Use IPV6 record.')
+parser.add_argument('record')
+parser.add_argument('newip')
+args = parser.parse_args()
 
-chose_record = args[0]
-ip = args[1]
+record_type = args.ipv6 and "AAAA" or "A"
 
 cnx = auth()
 all_domains = cnx.get_domains()
 ourdomain = None
 for domain in all_domains:
-    if chose_record.endswith(domain.name):
+    if args.record.endswith(domain.name):
         ourdomain = domain
-        justrecord = chose_record.replace(domain.name, "")
+        justrecord = args.record.replace(domain.name, "")
         if justrecord.endswith('.'):
             justrecord = justrecord[:-1]
 
@@ -84,12 +87,12 @@ if not all((ourdomain, justrecord)):
 all_records = ourdomain.get_records()
 ourrecord = None
 for record in all_records:
-    if record.name == chose_record:
+    if record.name == args.record:
         ourrecord = record
 
 if not ourrecord:
-    print "creating new record: %s ip: %s" % (chose_record, ip)
-    ourdomain.create_record(chose_record, ip, "A", TTL)
+    print "creating new record: %s ip: %s" % (args.record, args.newip)
+    ourdomain.create_record(args.record, args.newip, record_type, TTL)
 else:
-    print "updating new record: %s ip: %s" % (chose_record, ip)
-    ourrecord.update(data=ip)
+    print "updating new record: %s ip: %s" % (args.record, args.newip)
+    ourrecord.update(data=args.newip)
