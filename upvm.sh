@@ -50,4 +50,7 @@ RCLOUD_API_KEY=\${UK_RCLOUD_KEY}
 AUTH_SERVER=\${UK_RCLOUD_AURL}
 EOF
 
-chown -R stack: ~stack/GIT /opt/stack
+# Set my GIT commit as my enovance work email.
+git config -f ~stack/.gitconfig user.email chmouel@enovance.com
+
+chown -R stack: ~stack /opt/stack
