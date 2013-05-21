@@ -32,3 +32,5 @@ function gd() {
 }
 
 unset USERNAME
+
+alias resetswift='swift-init all stop;/bin/rm -rf /opt/stack/data/swift/drives/sdb1/1;mkdir -p /opt/stack/data/swift/drives/sdb1/1;swift-init all start;swift-init proxy stop'
