@@ -9,14 +9,16 @@ FLAVOR_ID=4
 MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
 
-SERVER_NAME=${1:-devstack.chmouel.com}
-IMAGE_NAME=${2:-"Ubuntu 12.04 LTS x86_64"}
+SERVER_NAME=devstack.chmouel.com
+IMAGE_NAME="Ubuntu 12.04 LTS x86_64"
 
 SHORT_SERVER_NAME=${SERVER_NAME%%.*}
 DOMAIN_NAME=${SERVER_NAME#*.}
 MYDIR=$( dirname $(readlink -f $0))
 NOVA_BIN=${HOME}/bin/novaeno
 set -e
+
+[[ -n $1 && -e $1 ]] && source $1
 
 function create_server() {
     ${NOVA_BIN} boot --poll --key-name ${SSH_KEY_NAME} --flavor=${FLAVOR_ID} --image=${IMAGE_ID} \
