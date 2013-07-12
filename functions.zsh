@@ -15,6 +15,8 @@ alias inst="sudo apt-get -y install"
 alias remove="sudo apt-get -y remove"
 alias u="upcs -cpublic"
 
+alias swiftv1='ST_USER=admin:admin ST_AUTH="http://localhost:8080/auth/v1.0" ST_KEY=admin swift stat'
+
 function gd() {
     arg=$1
 
@@ -34,3 +36,4 @@ function gd() {
 unset USERNAME
 
 [[ -e /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
+
