@@ -48,7 +48,7 @@ for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
 done
 
-scp upvm.sh bootstrap-pre.sh ubuntu@${SERVER_NAME}:/tmp/
+scp bootstrap.sh upvm.sh bootstrap-pre.sh ubuntu@${SERVER_NAME}:/tmp/
 ssh ubuntu@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
 ssh stack@${SERVER_NAME} "bash /tmp/bootstrap.sh && sudo bash /tmp/upvm.sh"
 

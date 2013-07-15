@@ -5,4 +5,4 @@ sudo grep -q '^%admin.* ALL' /etc/sudoers  && sudo sed -i '/^%admin/ { s/ALL$/NO
 sudo useradd -s /bin/bash -G adm,sudo,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,admin -m stack
 sudo cp -a /home/ubuntu/.ssh /home/stack/
 sudo chown -R stack: /home/stack/.ssh
-curl -s -o/tmp/bootstrap.sh http://p.chmouel.com/bootstrap.sh
+chmod +x /tmp/bootstrap.sh

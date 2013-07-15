@@ -34,7 +34,7 @@ cd /opt/stack
 for repo in $REPOS;do
     [[ ${repo} == */* ]] || repo=openstack/${repo}
     [[ -d $(basename ${repo}) ]] || \
-        git clone --depth 100 https://github.com/${repo}.git
+        git clone --depth 100 http://github.com/${repo}.git
 done
 
 # Install pip
@@ -44,7 +44,7 @@ apt-get -y install python-pip
 apt-get -y install ${DEB_PACKAGES}
 
 # Reinstall pip but in a different way this time.
-curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py|python
+curl -L http://raw.github.com/pypa/pip/master/contrib/get-pip.py|python
 pip install --upgrade setuptools
 
 # Install pip
