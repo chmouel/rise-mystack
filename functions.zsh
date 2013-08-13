@@ -10,12 +10,15 @@ alias -g MJ="|python -mjson.tool"
 alias -g SP="|curl -F 'sprunge=<-' http://sprunge.us"
 alias so_os="pushd ~/devstack >/dev/null && source openrc && popd >/dev/null"
 alias so_os_admin="pushd ~/devstack >/dev/null && source openrc admin admin && popd >/dev/null"
+OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing
+alias so_os_testuser="so_os;export OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing"
 alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
 alias inst="sudo apt-get -y install"
 alias remove="sudo apt-get -y remove"
 alias u="upcs -cpublic"
 
 alias swiftv1='ST_USER=admin:admin ST_AUTH="http://localhost:8080/auth/v1.0" ST_KEY=admin swift stat'
+
 
 function gd() {
     arg=$1
