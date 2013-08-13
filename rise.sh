@@ -59,4 +59,6 @@ scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_N
 }
 scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
+scp -rq ${MYDIR}/tests stack@${SERVER_NAME}:
 ssh stack@${SERVER_NAME} "echo HOST_IP=${PUBLIC_IP}|tee -a devstack/localrc >/dev/null;chmod +x devstack/local.sh"
+ssh stack@${SERVER_NAME} 'mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
