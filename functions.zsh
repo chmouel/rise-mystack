@@ -8,8 +8,8 @@ export UK_RCLOUD_AURL=https://lon.auth.api.rackspacecloud.com/v1.0
 
 alias -g MJ="|python -mjson.tool"
 alias -g SP="|curl -F 'sprunge=<-' http://sprunge.us"
-alias so_os="pushd ~/devstack >/dev/null && source openrc && popd >/dev/null"
-alias so_os_admin="pushd ~/devstack >/dev/null && source openrc admin admin && popd >/dev/null"
+alias so_os=soso
+alias so_os_admin="soso admin admin" 
 OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing
 alias so_os_testuser="so_os;export OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing"
 alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
@@ -19,6 +19,12 @@ alias u="upcs -cpublic"
 
 alias swiftv1='ST_USER=admin:admin ST_AUTH="http://localhost:8080/auth/v1.0" ST_KEY=admin swift stat'
 
+
+function soso {
+    pushd ~/devstack >/dev/null && {
+        eval $(bash -c ". openrc $1 $2;env|sed -n '/OS_/ { s/^/export /;p}'")
+    } && popd >/dev/null
+}
 
 function gd() {
     arg=$1
