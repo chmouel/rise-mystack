@@ -16,6 +16,7 @@ IMAGE_NAME="ubuntu-raring"
 
 MYDIR=$( dirname $(readlink -f $0))
 NOVA_BIN=${HOME}/bin/novaeno
+NOVA_BIN=nova
 DOMAIN_NAME=${SERVER_NAME#*.}
 SHORT_SERVER_NAME=${SERVER_NAME%%.*}
 
