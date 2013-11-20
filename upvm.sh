@@ -84,7 +84,7 @@ done
 [[ -e ~stack/GIT/upcs/upcs ]] && ln -sf ~stack/GIT/upcs/upcs ~/bin/upcs
 
 # Install git-review
-[[ -e /opt/stack/git-review ]] && { cd /opt/stack/git-review; python setup.py develop  ;}
+[[ -e /opt/stack/git-review ]] && { cd /opt/stack/git-review; pip install -e .  ;}
 
 mkdir -p ~stack/.config/rackspace-cloud/
 cat <<EOF>~stack/.config/rackspace-cloud/config
