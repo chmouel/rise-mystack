@@ -43,14 +43,6 @@ apt-get -y install python-pip
 # Install dev tools
 apt-get -y install ${DEB_PACKAGES}
 
-# Reinstall pip but in a different way this time.
-curl -L http://raw.github.com/pypa/pip/master/contrib/get-pip.py|python
-pip install --upgrade setuptools
-
-# Install pip
-apt-get -y remove python-setuptools
-
-
 # PIP installage.
 for i in ${PIP_PACKAGES};do
      pip install --upgrade ${i}

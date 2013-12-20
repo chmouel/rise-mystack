@@ -10,7 +10,7 @@ MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
-IMAGE_NAME="ubuntu-raring"
+IMAGE_NAME="Ubuntu 13.10 x86_64"
 
 [[ -n $1 && -e $1 ]] && source $1
 
