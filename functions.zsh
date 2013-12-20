@@ -43,6 +43,18 @@ function gd() {
     git-review -d ${arg}
 }
 
+function os_complete {
+    local comp=$1
+    local d=/opt/stack/python-${1}client/tools/${comp}.bash_completion
+
+    [[ -e ${d} ]] || { echo "No project ${comp}"; return 1;}
+
+    autoload -U bashcompinit
+    bashcompinit
+    source ${d}
+
+}
+
 unset USERNAME
 
 [[ -e /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
