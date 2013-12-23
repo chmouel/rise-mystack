@@ -6,7 +6,7 @@ REPOS="openstack-infra/git-review nova
        python-swiftclient swift chmouel/upcs"
 PORT_TO_ALLOW="80 8080 5000 35357"
 REPO_TO_LINK_HOME="swift devstack python-swiftclient python-keystoneclient keystone"
-PIP_PACKAGES="distribute flake8 testrepository coverage tox"
+PIP_PACKAGES="flake8 testrepository coverage tox"
 DEB_PACKAGES="libxslt1-dev zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
 
 declare -A gists
