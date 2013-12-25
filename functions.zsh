@@ -55,6 +55,16 @@ function os_complete {
 
 }
 
+function rejoin_stack() {
+     mount | grep -q /opt/stack/data/swift/drives/images/swift.img || \
+         sudo mount -t xfs -o loop,noatime,nodiratime,nobarrier,logbufs=8 \
+            /opt/stack/data/swift/drives/images/swift.img  /opt/stack/data/swift/drives/sdb1
+    mkdir -p /tmp/screen-logs
+    sed -i '/^hardstatus/ { s/.*/source ~\/.screenrc\n/}' ~/devstack/stack-screenrc
+    cd ~/devstack
+    ./rejoin-stack.sh
+}
+
 unset USERNAME
 
 [[ -e /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
