@@ -26,6 +26,7 @@ function soso {
         eval $(bash -c ". openrc $1 $2;env|sed -n '/OS_/ { s/^/export /;p}'")
     } && popd >/dev/null
 }
+soso
 
 function gd() {
     arg=$1
