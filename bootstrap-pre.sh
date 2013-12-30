@@ -1,4 +1,5 @@
 #!/bin/bash
+# Pre bootstrap to get the useradd, sudo and perms working
 set -x
 sudo grep -q '^%sudo.* ALL' /etc/sudoers  && sudo sed -i '/^%sudo/ { s/ALL$/NOPASSWD:ALL/}' /etc/sudoers
 sudo grep -q '^%admin.* ALL' /etc/sudoers  && sudo sed -i '/^%admin/ { s/ALL$/NOPASSWD:ALL/}' /etc/sudoers
