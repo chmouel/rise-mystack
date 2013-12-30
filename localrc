@@ -11,4 +11,11 @@ SERVICE_PASSWORD=ADMIN
 SERVICE_TOKEN=7f00aa2752e42ff6eead
 SWIFT_HASH=8519b430eb14d5983334
 SWIFT_REPLICAS=1
-VIRT_DRIVER=docker
+#VIRT_DRIVER=docker
+
+
+#ENABLED_SERVICES+=,heat,h-api,h-api-cfn,h-api-cw,h-eng,swift
+#IMAGE_URLS+=",http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F17-x86_64-cfntools.qcow2" 
+#HOST_IP=127.0.0.1
+
+

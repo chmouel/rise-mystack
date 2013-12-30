@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-REPOS="openstack-infra/git-review nova
+REPOS="openstack-infra/git-review nova heat python-heatclient
        keystone openstack-dev/devstack python-keystoneclient
        python-novaclient python-openstackclient
        python-swiftclient swift chmouel/upcs"
