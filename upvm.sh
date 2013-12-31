@@ -1,6 +1,7 @@
 #!/bin/bash
 set -x
 REPOS="openstack-infra/git-review nova heat python-heatclient
+       openstack/heat-templates
        keystone openstack-dev/devstack python-keystoneclient
        python-novaclient python-openstackclient
        python-swiftclient swift chmouel/upcs"
@@ -16,6 +17,7 @@ gists=(
     ["ks3"]="5303094 ks3.py"
     ["ksas"]="4985787 keystone-to-swift-as-another-user.sh"
     ["git-browse"]="5755303 git-browse.sh"
+    ["git-jenkins-error"]="8195145 git-jenkins-error.py"
 )
 
 set -e
