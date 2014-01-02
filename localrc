@@ -1,4 +1,6 @@
 # -*- Mode: shell-script -*-
+HOST_IP=127.0.0.1
+
 ADMIN_PASSWORD=ADMIN
 KEYSTONE_TOKEN_FORMAT=UUID
 LOGFILE=/tmp/devstack.log
@@ -7,14 +9,28 @@ DATABASE_PASSWORD=ADMIN
 SCREEN_LOGDIR=/tmp/screen-logs
 SERVICE_PASSWORD=ADMIN
 SERVICE_TOKEN=7f00aa2752e42ff6eead
+
+# Heat
+IMAGE_URLS+=",http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F18-x86_64-cfntools.qcow2"
+
+enable_service heat
+enable_service h-api
+enable_service h-api-cfn
+enable_service h-api-cw
+
+# Swift
 SWIFT_HASH=8519b430eb14d5983334
 SWIFT_REPLICAS=1
 
+enable_service swift
+enable_service s-proxy
+enable_service s-account
+enable_service s-container
+enable_service s-object
 
-# Heat+Quantum+Swift
-ENABLED_SERVICES+=,heat,h-api,h-api-cfn,h-api-cw,h-eng,swift
-IMAGE_URLS+=",http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F17-x86_64-cfntools.qcow2" 
-HOST_IP=127.0.0.1
+# Quantum
+Q_SERVICE_PLUGINS=quantum.plugins.services.agent_loadbalancer.plugin.LoadBalancerPlugin
+
 disable_service n-net
 enable_service q-svc
 enable_service q-agt
@@ -23,8 +39,6 @@ enable_service q-l3
 enable_service q-meta
 enable_service quantum
 enable_service q-lbaas
-Q_SERVICE_PLUGINS=quantum.plugins.services.agent_loadbalancer.plugin.LoadBalancerPlugin
-
 
 # Default+Swift
 # ENABLED_SERVICES="${ENABLED_SERVICES},swift"
