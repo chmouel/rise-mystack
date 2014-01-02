@@ -56,6 +56,7 @@ function os_complete {
 
 }
 
+function vin() { vim $(fin $1) ;}
 function rejoin_stack() {
      mount | grep -q /opt/stack/data/swift/drives/images/swift.img || \
          sudo mount -t xfs -o loop,noatime,nodiratime,nobarrier,logbufs=8 \
