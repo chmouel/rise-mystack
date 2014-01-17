@@ -1,6 +1,6 @@
 # -*- Mode: shell-script -*-
 HOST_IP=127.0.0.1
-UNDO_REQUIREMENTS
+UNDO_REQUIREMENTS=false
 
 # Logs
 LOGFILE=/tmp/devstack.log
@@ -19,6 +19,7 @@ IMAGE_URLS+=",http://fedorapeople.org/groups/heat/prebuilt-jeos-images/F18-x86_6
 
 enable_service heat
 enable_service h-api
+enable_service h-eng
 enable_service h-api-cfn
 enable_service h-api-cw
 
