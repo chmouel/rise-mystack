@@ -50,3 +50,4 @@ enable_service q-lbaas
 
 # Only Keystone Mysql Swift
 # ENABLED_SERVICES=key,mysql,swift
+HOST_IP=127.0.0.1
