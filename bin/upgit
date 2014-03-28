@@ -21,7 +21,7 @@ for dir in ${DIRS};do
             for i in requirements.txt test-requirements.txt;do
                 [[ -e $i ]] && git checkout -- $i
             done
-            git ${cmd} origin master
+            git ${cmd} --tags origin master
         popd >/dev/null
     done
 done
