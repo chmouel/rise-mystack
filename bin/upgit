@@ -5,7 +5,7 @@ if [[ $1 == "-c" ]];then
     shift
 fi
 if [[ -z $@ ]];then
-    DIRS=( /opt/stack /opt/stack/GIT )
+    DIRS=( /opt/stack ~/GIT )
 else
     DIRS=$@
 fi
@@ -17,6 +17,10 @@ for dir in ${DIRS};do
         pushd ${gitdir}/$d >/dev/null;
             branch=${${"$(<.git/HEAD)"#ref: }#refs/heads/}
             [[ ${branch} == master ]] && cmd="pull" || cmd="fetch"
+
+            for i in requirements.txt test-requirements.txt;do
+                [[ -e $i ]] && git checkout -- $i
+            done
             git ${cmd} origin master
         popd >/dev/null
     done
