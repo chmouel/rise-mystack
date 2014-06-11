@@ -17,6 +17,8 @@ if [[ ${version} == natty || ${version} == oneiric ]];then
     # New School CS
     sudo sed  -i '/^#deb .*\(multiverse\|universe\)$/ { s/^#//; }' /etc/apt/sources.list
     sudo apt-get update
+
+    sudo sed -i 's/nova.clouds.//g' /etc/apt/sources.list
 fi
 sudo apt-get -y install vim tmux screen git-core exuberant-ctags  zsh-beta ack-grep
 

@@ -24,7 +24,7 @@ function create_server() {
     ${NOVA_BIN} boot --poll --key-name ${SSH_KEY_NAME} --flavor=${FLAVOR_ID} --image=${IMAGE_ID} \
         --security-groups default ${SERVER_NAME}
     sleep 1
-    ${NOVA_BIN} remove-floating-ip ${SERVER_NAME} ${PUBLIC_IP}
+    ${NOVA_BIN} remove-floating-ip ${SERVER_NAME} ${PUBLIC_IP} || :
     ${NOVA_BIN} add-floating-ip ${SERVER_NAME} ${PUBLIC_IP}
 }
 
