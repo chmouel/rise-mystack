@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo ufw disable
+type -p ufw >/dev/null 2>/dev/null&& sudo ufw disable
