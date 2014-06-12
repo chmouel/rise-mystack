@@ -1,9 +1,18 @@
 #!/bin/bash
 # Pre bootstrap to get the useradd, sudo and perms working
+set -e
+
+if [[ -e /usr/bin/apt-get ]];then
+    ORIG_USER=ubuntu
+    NEWGROUPS=adm,sudo,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,admin 
+elif [[ -e /usr/bin/yum ]];then
+    ORIG_USER=fedora
+    NEWGROUPS="fedora,adm,wheel,systemd-journal"
+fi
+
 set -x
-sudo grep -q '^%sudo.* ALL' /etc/sudoers  && sudo sed -i '/^%sudo/ { s/ALL$/NOPASSWD:ALL/}' /etc/sudoers
-sudo grep -q '^%admin.* ALL' /etc/sudoers  && sudo sed -i '/^%admin/ { s/ALL$/NOPASSWD:ALL/}' /etc/sudoers
-sudo useradd -s /bin/bash -G adm,sudo,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,admin -m stack
-sudo cp -a /home/ubuntu/.ssh /home/stack/
+sudo sed -i '/^%\(wheel\|sudo\)/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers
+sudo useradd -s /bin/bash -G ${NEWGROUPS} -m stack
+sudo cp -a /home/${ORIG_USER}/.ssh /home/stack/
 sudo chown -R stack: /home/stack/.ssh
 chmod +x /tmp/bootstrap.sh

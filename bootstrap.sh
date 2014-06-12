@@ -1,35 +1,49 @@
 #!/bin/bash
 # sudo apt-get -y install curl  && bash  <(curl http://www.chmouel.com/pub/bootstrap.sh)
-version=$(lsb_release -c -s)
+export DEB_PACKAGES="vim tmux screen git-core exuberant-ctags  zsh-beta ack-grep"
+export RPM_PACKAGES="vim tmux screen git zsh ack"
 export DEBIAN_FRONTEND=noninteractive
 set -e
 
-sudo apt-get -y install locales
-sudo locale-gen en_GB.UTF-8
-sudo dpkg-reconfigure locales
+sudo sed -i '/^%\(wheel\|sudo\)/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers
 
-sudo sed -i '/^%sudo/ { s/ALL$/NOPASSWD:ALL/ }' /etc/sudoers
+function debianies () {
+    version=$(lsb_release -c -s)
+    sudo apt-get -y install locales
+    sudo locale-gen en_GB.UTF-8
+    sudo dpkg-reconfigure locales
 
+    if [[ ${version} == natty || ${version} == oneiric ]];then
+        # Old School CS
+        sudo sed -i '/^deb.*main/ { /restricted$/ { s/$/ multiverse/; }}' /etc/apt/sources.list 
+        # New School CS
+        sudo sed  -i '/^#deb .*\(multiverse\|universe\)$/ { s/^#//; }' /etc/apt/sources.list
+        sudo apt-get update
 
-if [[ ${version} == natty || ${version} == oneiric ]];then
-    # Old School CS
-    sudo sed -i '/^deb.*main/ { /restricted$/ { s/$/ multiverse/; }}' /etc/apt/sources.list 
-    # New School CS
-    sudo sed  -i '/^#deb .*\(multiverse\|universe\)$/ { s/^#//; }' /etc/apt/sources.list
-    sudo apt-get update
+        sudo sed -i 's/nova.clouds.//g' /etc/apt/sources.list
+    fi
+    sudo apt-get -y install ${DEB_PACKAGES}
+    sudo update-alternatives --set editor /usr/bin/vim.basic
 
-    sudo sed -i 's/nova.clouds.//g' /etc/apt/sources.list
+    sudo apt-get -y install ufw && \
+        sudo ufw allow proto tcp from any to any port 22 && \
+        sudo ufw -f enable
+}
+
+function readties() {
+    sudo yum -y update
+    sudo yum -y install ${RPM_PACKAGES}
+}
+
+# Install dev tools
+if [[ -e /usr/bin/apt-get ]];then
+    debianies
+elif [[ -e /usr/bin/yum ]];then
+    readties
 fi
-sudo apt-get -y install vim tmux screen git-core exuberant-ctags  zsh-beta ack-grep
 
-
-sudo update-alternatives --set editor /usr/bin/vim.basic
 
 sudo chsh -s /bin/zsh $USER
-
-sudo apt-get -y install ufw && \
-    sudo ufw allow proto tcp from any to any port 22 && \
-    sudo ufw -f enable
 
 cd $HOME
 mkdir -p GIT

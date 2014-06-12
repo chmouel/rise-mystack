@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+DISTRO=${1:-ubuntu}
 REPOS="openstack-infra/git-review nova heat python-heatclient
        openstack/heat-templates
        keystone openstack-dev/devstack python-keystoneclient
@@ -8,7 +9,8 @@ REPOS="openstack-infra/git-review nova heat python-heatclient
 PORT_TO_ALLOW="80 8080 5000 35357"
 REPO_TO_LINK_HOME="swift devstack python-swiftclient python-keystoneclient keystone"
 PIP_PACKAGES="flake8 testrepository coverage tox"
-DEB_PACKAGES="libxslt1-dev zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
+DEB_PACKAGES="python-pip libxslt1-dev zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
+RPM_PACKAGES="python-pip autojump-zsh ipython htop libxslt-devel zlib-devel gcc glibc-devel python-devel"
 
 declare -A gists
 gists=(
@@ -22,14 +24,6 @@ gists=(
 
 set -e
 
-# Enable port
-for port in ${PORT_TO_ALLOW};do
-    ufw allow ${port}
-done
-
-# Update APT
-apt-get update --fix-missing
-
 # checkout repos.
 mkdir -p /opt/stack
 cd /opt/stack
@@ -39,11 +33,14 @@ for repo in $REPOS;do
         git clone --depth 100 http://github.com/${repo}.git
 done
 
-# Install pip
-apt-get -y install python-pip
-
 # Install dev tools
-apt-get -y install ${DEB_PACKAGES}
+if [[ -e /usr/bin/apt-get ]];then
+    apt-get update --fix-missing
+    apt-get -y install ${DEB_PACKAGES}
+elif [[ -e /usr/bin/yum ]];then
+    yum -y update
+    yum -y install ${RPM_PACKAGES}
+fi
 
 # PIP installage.
 for i in ${PIP_PACKAGES};do

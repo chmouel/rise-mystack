@@ -10,9 +10,15 @@ MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
-IMAGE_NAME="Ubuntu 14.04 x86_64"
+DISTRO=ubuntu
 
 [[ -n $1 && -e $1 ]] && source $1
+
+if [[ ${DISTRO} == "ubuntu" && -z ${IMAGE_NAME} ]];then
+    IMAGE_NAME="Ubuntu 14.04 x86_64"
+elif [[ ${DISTRO} == "fedora" && -z ${IMAGE_NAME} ]];then
+    IMAGE_NAME="Fedora20"
+fi
 
 MYDIR=$( dirname $(readlink -f $0))
 NOVA_BIN=${HOME}/bin/novaeno
@@ -49,9 +55,9 @@ for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
 done
 
-scp bootstrap.sh upvm.sh bootstrap-pre.sh ubuntu@${SERVER_NAME}:/tmp/
-ssh ubuntu@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
-ssh stack@${SERVER_NAME} "bash /tmp/bootstrap.sh && sudo bash /tmp/upvm.sh"
+scp bootstrap.sh upvm.sh bootstrap-pre.sh ${DISTRO}@${SERVER_NAME}:/tmp/
+ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
+ssh -t stack@${SERVER_NAME} "bash -x /tmp/bootstrap.sh && sudo bash -x /tmp/upvm.sh"
 
 scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
 [[ -e ~/.config/rackspace-cloud/config ]] && {
