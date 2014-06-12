@@ -10,7 +10,7 @@ MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
-DISTRO=ubuntu
+DISTRO=fedora
 
 [[ -n $1 && -e $1 ]] && source $1
 
