@@ -31,6 +31,7 @@ function debianies () {
 }
 
 function readties() {
+    sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
     sudo yum -y update
     sudo yum -y install ${RPM_PACKAGES}
 }

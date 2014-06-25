@@ -8,7 +8,7 @@ REPOS="openstack-infra/git-review nova heat python-heatclient
        python-swiftclient swift chmouel/upcs"
 PORT_TO_ALLOW="80 8080 5000 35357"
 REPO_TO_LINK_HOME="swift devstack python-swiftclient python-keystoneclient keystone"
-PIP_PACKAGES="flake8 testrepository coverage tox"
+PIP_PACKAGES="hacking testrepository coverage tox"
 DEB_PACKAGES="python-pip libxslt1-dev zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
 RPM_PACKAGES="python-pip autojump-zsh ipython htop libxslt-devel zlib-devel gcc glibc-devel python-devel"
 
