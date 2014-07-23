@@ -9,8 +9,8 @@ REPOS="openstack-infra/git-review nova heat python-heatclient
 PORT_TO_ALLOW="80 8080 5000 35357"
 REPO_TO_LINK_HOME="swift devstack python-swiftclient python-keystoneclient keystone"
 PIP_PACKAGES="hacking testrepository coverage tox"
-DEB_PACKAGES="python-pip libxslt1-dev zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
-RPM_PACKAGES="python-pip autojump-zsh ipython htop libxslt-devel zlib-devel gcc glibc-devel python-devel"
+DEB_PACKAGES="python-pip libxslt1-dev git-review zlib1g-dev libsqlite3-dev libssl-dev autojump ipython htop build-essential python-dev"
+RPM_PACKAGES="autojump-zsh git-review ipython htop libxslt-devel zlib-devel gcc glibc-devel python-devel"
 
 declare -A gists
 gists=(
@@ -42,11 +42,6 @@ elif [[ -e /usr/bin/yum ]];then
     yum -y install ${RPM_PACKAGES}
 fi
 
-# PIP installage.
-for i in ${PIP_PACKAGES};do
-     pip install --upgrade ${i}
-done
-
 cat <<EOF > ~stack/.ssh/config
 Host *
     ForwardAgent yes
@@ -73,9 +68,6 @@ done
 
 # Install upcs.
 [[ -e ~stack/GIT/upcs/upcs ]] && ln -sf ~stack/GIT/upcs/upcs ~/bin/upcs
-
-# Install git-review
-[[ -e /opt/stack/git-review ]] && { cd /opt/stack/git-review; pip install -e .  ;}
 
 mkdir -p ~stack/.config/rackspace-cloud/
 cat <<EOF>~stack/.config/rackspace-cloud/config

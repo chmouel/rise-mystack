@@ -14,13 +14,17 @@ OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing
 alias so_os_testuser="so_os;export OS_TENANT_NAME=swifttenanttest1 OS_USERNAME=swiftusertest1 OS_PASSWORD=testing"
 alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
 
-if [[ -n $os_VENDOR && $os_VENDOR == "Fedora" ]];then
+
+if [[ -e /usr/bin/yum ]];then
     alias inst="sudo yum -y install"
     alias remove="sudo yum -y remove"
+    alias search="sudo yum search"
 else
     alias inst="sudo apt-get -y install"
     alias remove="sudo apt-get -y remove"
+    alias search="apt-cache search"
 fi
+
 alias u="upcs -cpublic"
 
 alias swiftv1='ST_USER=admin:admin ST_AUTH="http://localhost:8080/auth/v1.0" ST_KEY=admin swift stat'
