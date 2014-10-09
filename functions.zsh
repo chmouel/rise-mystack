@@ -37,7 +37,7 @@ function soso {
         source openrc
     } && popd >/dev/null
 }
-soso
+soso >/dev/null
 
 function gd() {
     arg=$1
