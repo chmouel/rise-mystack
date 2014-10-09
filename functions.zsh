@@ -31,6 +31,7 @@ alias swiftv1='ST_USER=admin:admin ST_AUTH="http://localhost:8080/auth/v1.0" ST_
 
 
 function soso {
+    [[ -d ~/devstack ]] || return
     eval $(for i in $(env|grep OS_);do echo -n "export ";echo -n ${i%%=*};echo =;done)
     pushd ~/devstack >/dev/null && {
         #eval $(bash -c ". openrc $1 $2;env|sed -n '/OS_/ { s/^/export /;p}'")
