@@ -1,7 +1,7 @@
 #!/bin/bash
 # sudo apt-get -y install curl  && bash  <(curl http://www.chmouel.com/pub/bootstrap.sh)
 export DEB_PACKAGES="vim tmux screen git-core exuberant-ctags  zsh-beta ack-grep"
-export RPM_PACKAGES="vim tmux screen git zsh ack"
+export RPM_PACKAGES="vim tmux screen git zsh ack yum-cron"
 export DEBIAN_FRONTEND=noninteractive
 set -e
 
@@ -63,9 +63,8 @@ done
 ln -fs GIT/zsh-config ~/.shell
 ln -fs .shell/config/zshrc ~/.zshrc
 ln -fs GIT/vim-config ~/.vim
-ln -fs .vim/vimrc ~/.vimrc
 
-ln -fs GIT/emacs-config ~/.emacs.d
+vim +PluginInstall +qall || true
 
 echo -e "#\n#hostColor=\"yellow\"\n#userColor=\"white\"\n" > ~/.shell/hosts/${HOSTNAME%%.*}.sh
 
