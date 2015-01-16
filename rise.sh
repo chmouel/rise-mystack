@@ -17,7 +17,7 @@ DISTRO=fedora
 if [[ ${DISTRO} == "ubuntu" && -z ${IMAGE_NAME} ]];then
     IMAGE_NAME="Ubuntu 14.04 x86_64"
 elif [[ ${DISTRO} == "fedora" && -z ${IMAGE_NAME} ]];then
-    IMAGE_NAME="Fedora20"
+    IMAGE_NAME="Fedora21"
 fi
 
 MYDIR=$( dirname $(readlink -f $0))
