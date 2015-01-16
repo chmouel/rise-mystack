@@ -60,11 +60,6 @@ ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
 ssh -t stack@${SERVER_NAME} "bash -x /tmp/bootstrap.sh && sudo bash -x /tmp/upvm.sh"
 
 scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
-[[ -e ~/.config/rackspace-cloud/config ]] && {
-    source ~/.config/rackspace-cloud/config
-    ssh -t -q stack@${SERVER_NAME} "sed -i -e 's/@UK_RCLOUD_KEY@/${UK_RCLOUD_KEY}/' -e 's/@UK_RCLOUD_USER@/${UK_RCLOUD_USER}/' .shell/hosts/${SHORT_SERVER_NAME}.sh "
-}
 scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
-scp -rq ${MYDIR}/tests stack@${SERVER_NAME}:
 ssh stack@${SERVER_NAME} 'mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
