@@ -4,8 +4,11 @@ set -e
 
 if [[ -e /usr/bin/apt-get ]];then
     ORIG_USER=ubuntu
-    NEWGROUPS=adm,sudo,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,admin 
-elif [[ -e /usr/bin/yum ]];then
+    NEWGROUPS=adm,sudo,dialout,cdrom,floppy,audio,dip,video,plugdev,netdev,admin
+elif id cloud-user >/dev/null;then
+    ORIG_USER=cloud-user
+    NEWGROUPS="cloud-user,adm,wheel,systemd-journal"
+elif id fedora >/dev/null;then
     ORIG_USER=fedora
     NEWGROUPS="fedora,adm,wheel,systemd-journal"
 fi

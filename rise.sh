@@ -57,9 +57,9 @@ done
 
 scp bootstrap.sh upvm.sh bootstrap-pre.sh ${DISTRO}@${SERVER_NAME}:/tmp/
 ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
-ssh -t stack@${SERVER_NAME} "bash -x /tmp/bootstrap.sh && sudo bash -x /tmp/upvm.sh"
+ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_PASSWORD=${RHEL_PASSWORD}; bash -x /tmp/bootstrap.sh && sudo bash -x /tmp/upvm.sh"
 
 scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
 scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
-ssh stack@${SERVER_NAME} 'mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
+ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'

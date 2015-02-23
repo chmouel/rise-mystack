@@ -34,8 +34,7 @@ function soso {
     [[ -d ~/devstack ]] || return
     eval $(for i in $(env|grep OS_);do echo -n "export ";echo -n ${i%%=*};echo =;done)
     pushd ~/devstack >/dev/null && {
-        #eval $(bash -c ". openrc $1 $2;env|sed -n '/OS_/ { s/^/export /;p}'")
-        source openrc
+        eval $(bash -c ". openrc $1 $2;env|sed -n '/OS_/ { s/^/export /;p}'")
     } && popd >/dev/null
 }
 soso >/dev/null

@@ -15,7 +15,7 @@ function debianies () {
 
     if [[ ${version} == natty || ${version} == oneiric ]];then
         # Old School CS
-        sudo sed -i '/^deb.*main/ { /restricted$/ { s/$/ multiverse/; }}' /etc/apt/sources.list 
+        sudo sed -i '/^deb.*main/ { /restricted$/ { s/$/ multiverse/; }}' /etc/apt/sources.list
         # New School CS
         sudo sed  -i '/^#deb .*\(multiverse\|universe\)$/ { s/^#//; }' /etc/apt/sources.list
         sudo apt-get update
@@ -31,6 +31,16 @@ function debianies () {
 }
 
 function readties() {
+    if [[ -e /usr/bin/subscription-manager ]];then
+        if [[ -n ${RHEL_USER} && -n ${RHEL_PASSWORD} ]];then
+            sudo subscription-manager register --user ${RHEL_USER} \
+                 --password ${RHEL_PASSWORD}
+        else
+            echo "Enter your RHN user/password: "
+            sudo subscription-manager register
+        fi
+        sudo subscription-manager attach --auto
+    fi
     sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
     sudo yum -y update
     sudo yum -y install ${RPM_PACKAGES}
