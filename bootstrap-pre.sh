@@ -13,6 +13,13 @@ elif id fedora >/dev/null;then
     NEWGROUPS="fedora,adm,wheel,systemd-journal"
 fi
 
+if [[ -e /etc/cloud/cloud.cfg ]];then
+    grep -q set_hostname /etc/cloud/cloud.cfg  && sudo sed -i '/set_hostname/d' /etc/cloud/cloud.cfg 
+    grep -q update_hostname /etc/cloud/cloud.cfg  && sudo sed -i '/update_hostname/d' /etc/cloud/cloud.cfg 
+    grep \.novalocal /etc/hostname && sudo sed -i 's/\.novalocal//' /etc/hostname
+    sudo hostname $(</etc/hostname)
+fi
+
 set -x
 sudo sed -i '/^%\(wheel\|sudo\)/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers
 sudo useradd -s /bin/bash -G ${NEWGROUPS} -m stack
