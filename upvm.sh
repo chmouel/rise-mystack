@@ -1,6 +1,7 @@
 #!/bin/bash
 set -x
 DISTRO=${1:-ubuntu}
+OPENSTACK_SETUP=${OPENSTACK_SETUP:-yes}
 REPOS="openstack-infra/git-review nova heat python-heatclient
        openstack/heat-templates
        keystone openstack-dev/devstack python-keystoneclient
@@ -25,13 +26,16 @@ gists=(
 set -e
 
 # checkout repos.
-mkdir -p /opt/stack
-cd /opt/stack
-for repo in $REPOS;do
-    [[ ${repo} == */* ]] || repo=openstack/${repo}
-    [[ -d $(basename ${repo}) ]] || \
-        git clone --depth 100 http://github.com/${repo}.git
-done
+if [[ -n ${OPENSTACK_SETUP} && ${OPENSTACK_SETUP} == "yes" ]];then
+    mkdir -p /opt/stack
+    cd /opt/stack
+    for repo in $REPOS;do
+        [[ ${repo} == */* ]] || repo=openstack/${repo}
+        [[ -d $(basename ${repo}) ]] || \
+            git clone --depth 100 http://github.com/${repo}.git
+    done
+    chown -R stack: /opt/stack
+fi
 
 # Install dev tools
 if [[ -e /usr/bin/apt-get ]];then
@@ -77,13 +81,14 @@ AUTH_SERVER=\${UK_RCLOUD_AURL}
 EOF
 
 
-# Link some repos home.
-for i in ${REPO_TO_LINK_HOME};do
-    ln -fs /opt/stack/${i} ~stack/${i}
-done
+if [[ -n ${OPENSTACK_SETUP} && ${OPENSTACK_SETUP} == "yes" ]];then
+    # Link some repos home.
+    for i in ${REPO_TO_LINK_HOME};do
+        ln -fs /opt/stack/${i} ~stack/${i}
+    done
+fi
 
 # Set my GIT commit as my enovance work email.
 git config -f ~stack/.gitconfig user.email chmouel@enovance.com
 
-# Chown it for sure
-chown -R stack: ~stack /opt/stack
+chown -R stack: ~stack

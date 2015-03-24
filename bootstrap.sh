@@ -34,12 +34,12 @@ function readties() {
     if [[ -e /usr/bin/subscription-manager ]];then
         if [[ -n ${RHEL_USER} && -n ${RHEL_PASSWORD} ]];then
             sudo subscription-manager register --user ${RHEL_USER} \
-                 --password ${RHEL_PASSWORD}
+                 --password ${RHEL_PASSWORD} || true
         else
             echo "Enter your RHN user/password: "
-            sudo subscription-manager register
+            sudo subscription-manager register --force || true
         fi
-        sudo subscription-manager attach --auto
+        sudo subscription-manager attach --auto || true
     fi
     sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
     sudo yum -y update
