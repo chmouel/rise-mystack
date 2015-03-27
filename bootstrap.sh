@@ -84,8 +84,7 @@ cat <<EOF>~/.shell/hosts/${HOSTNAME%%.*}.sh
 
 alias inst="sudo yum -y install"
 alias remove="sudo yum -y remove"
-alias g="ack-grep --color-match 'bold blue'"
-alias -g SP="|curl -F 'sprunge=<-' http://sprunge.us"
+alias g="git grep"
 
 export LESS="-r"
 EOF

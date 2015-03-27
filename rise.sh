@@ -11,6 +11,7 @@ SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
 DISTRO=fedora
+OPENSTACK_SETUP=yes
 
 [[ -n $1 && -e $1 ]] && source $1
 
@@ -60,6 +61,7 @@ ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
 ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
 
 scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
-scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
+
+[[ ${OPENSTACK_SETUP} == "yes" ]] && scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
 ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
