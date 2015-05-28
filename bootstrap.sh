@@ -39,7 +39,11 @@ function readties() {
             echo "Enter your RHN user/password: "
             sudo subscription-manager register --force || true
         fi
-        sudo subscription-manager attach --auto || true
+        if [[ -n ${RHEL_POOL} ]];then
+            subscription-manager subscribe --pool ${RHEL_POOL}
+        else
+            sudo subscription-manager attach --auto || true
+        fi
     fi
     sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
     sudo yum -y update
