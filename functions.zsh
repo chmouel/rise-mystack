@@ -16,9 +16,11 @@ alias so_euc="pushd ~/devstack >/dev/null && source eucarc && popd >/dev/null"
 
 
 if [[ -e /usr/bin/yum ]];then
-    alias inst="sudo yum -y install"
-    alias remove="sudo yum -y remove"
-    alias search="sudo yum search"
+    [[ -e /usr/bin/dnf ]] && RPMI=dnf || RPMI=yum
+    alias inst="sudo $RPMI -y install"
+    alias remove="sudo $RPMI -y remove"
+    alias search="sudo $RPMI search"
+    unset RPMI
 else
     alias inst="sudo apt-get -y install"
     alias remove="sudo apt-get -y remove"

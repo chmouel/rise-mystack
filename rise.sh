@@ -18,7 +18,7 @@ OPENSTACK_SETUP=yes
 if [[ ${DISTRO} == "ubuntu" && -z ${IMAGE_NAME} ]];then
     IMAGE_NAME="Ubuntu 14.04 x86_64"
 elif [[ ${DISTRO} == "fedora" && -z ${IMAGE_NAME} ]];then
-    IMAGE_NAME="Fedora21"
+    IMAGE_NAME="Fedora22"
 fi
 
 MYDIR=$( dirname $(readlink -f $0))

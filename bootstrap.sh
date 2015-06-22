@@ -45,9 +45,16 @@ function readties() {
             sudo subscription-manager attach --auto || true
         fi
     fi
-    sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
-    sudo yum -y update
-    sudo yum -y install ${RPM_PACKAGES}
+
+    if [[ -e /etc/yum.conf ]];then
+	    sudo sed -i '/\[main\]/a assumeyes=1' /etc/yum.conf
+        RPMI=yum
+    else
+	    RPMI=dnf
+        echo "assumeyes=True" | sudo tee -a /etc/dnf/dnf.conf >/dev/null
+    fi
+    sudo $RPMI -y update
+    sudo $RPMI -y install ${RPM_PACKAGES}
 }
 
 # Install dev tools

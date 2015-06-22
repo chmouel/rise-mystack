@@ -25,6 +25,8 @@ gists=(
 
 set -e
 
+RPMI=""
+
 # checkout repos.
 if [[ -n ${OPENSTACK_SETUP} && ${OPENSTACK_SETUP} == "yes" ]];then
     mkdir -p /opt/stack
@@ -42,8 +44,14 @@ if [[ -e /usr/bin/apt-get ]];then
     apt-get update --fix-missing
     apt-get -y install ${DEB_PACKAGES}
 elif [[ -e /usr/bin/yum ]];then
-    yum -y update
-    yum -y install ${RPM_PACKAGES}
+    RPMI=yum
+elif [[ -e /usr/bin/dnf ]];then
+    RPMI=yum
+fi
+
+if [[ -n $RPMI ]];then
+    $RPMI -y update
+    $RPMI -y install ${RPM_PACKAGES}
 fi
 
 cat <<EOF > ~stack/.ssh/config
