@@ -50,7 +50,7 @@ function rebuild_server() {
        create_server
     fi
 }
-rebuild_server
+[[ -z ${SKIP_REBUILD} ]] && rebuild_server
 
 for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
