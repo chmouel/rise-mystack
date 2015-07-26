@@ -22,7 +22,10 @@ fi
 
 set -x
 sudo sed -i '/^%\(wheel\|sudo\)/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers
-sudo useradd -s /bin/bash -G ${NEWGROUPS} -m stack
-sudo cp -a /home/${ORIG_USER}/.ssh /home/stack/
-sudo chown -R stack: /home/stack/.ssh
+
+[[ -d /home/stack ]] || {
+    sudo useradd -s /bin/bash -G ${NEWGROUPS} -m stack
+    sudo cp -a /home/${ORIG_USER}/.ssh /home/stack/
+    sudo chown -R stack: /home/stack/.ssh
+}
 chmod +x /tmp/bootstrap.sh
