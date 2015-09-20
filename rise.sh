@@ -56,12 +56,22 @@ for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
 done
 
-scp bootstrap.sh upvm.sh bootstrap-pre.sh ${DISTRO}@${SERVER_NAME}:/tmp/
-ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
-ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
+function _scmd () {
+    type=$1
+    shift
+    if [[ -n ${JUMP_HOST} ]];then
+        ${type} -o ProxyCommand="ssh -W %h:%p ${JUMP_USER:-${DISTRO}}@${JUMP_HOST}" $@
+    else
+        ${type} $@
+    fi
+}
 
-scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
+_scmd scp ${proxy_command} bootstrap.sh upvm.sh bootstrap-pre.sh ${DISTRO}@${SERVER_NAME}:/tmp/
+_scmd ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
+_scmd ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
 
-[[ ${OPENSTACK_SETUP} == "yes" ]] && scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
-scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
-ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
+_scmd scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
+
+[[ ${OPENSTACK_SETUP} == "yes" ]] && _scmd scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
+_scmd scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
+_scmd ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
