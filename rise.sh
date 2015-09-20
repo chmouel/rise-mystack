@@ -71,7 +71,9 @@ _scmd ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
 _scmd ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
 
 _scmd scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
-
-[[ ${OPENSTACK_SETUP} == "yes" ]] && _scmd scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
 _scmd scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
-_scmd ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
+
+if [[ ${OPENSTACK_SETUP} == "yes" ]]; then 
+    _scmd scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
+    _scmd ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
+fi
