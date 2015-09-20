@@ -11,7 +11,7 @@ SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
 DISTRO=fedora
-OPENSTACK_SETUP=yes
+OPENSTACK_SETUP=no
 
 [[ -n $1 && -e $1 ]] && source $1
 
