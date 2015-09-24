@@ -40,7 +40,7 @@ function readties() {
             sudo subscription-manager register --force || true
         fi
         if [[ -n ${RHEL_POOL} ]];then
-            subscription-manager subscribe --pool ${RHEL_POOL}
+            sudo subscription-manager subscribe --pool ${RHEL_POOL}
         else
             sudo subscription-manager attach --auto || true
         fi
