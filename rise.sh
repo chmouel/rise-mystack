@@ -2,6 +2,8 @@
 set -x
 set -e
 
+[[ $1 == "-s" ]] && { SKIP_REBUILD=true; shift ;}
+
 function readlink { [[ $1 == "-f" ]] && shift; [[ -z $1 ]] && return;python -c 'import os,sys;print os.path.realpath(sys.argv[1])' $1 ;}
 
 PUBLIC_IP=46.231.128.140
@@ -10,15 +12,17 @@ MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
 
 SERVER_NAME=devstack.chmouel.com
-DISTRO=fedora
+CLOUD_USER=fedora
 OPENSTACK_SETUP=no
 
 [[ -n $1 && -e $1 ]] && source $1
 
-if [[ ${DISTRO} == "ubuntu" && -z ${IMAGE_NAME} ]];then
-    IMAGE_NAME="Ubuntu 14.04 x86_64"
-elif [[ ${DISTRO} == "fedora" && -z ${IMAGE_NAME} ]];then
-    IMAGE_NAME="Fedora22"
+if [[ -z ${IMAGE_NAME} ]];then
+    echo "I need a IMAGE_NAME"
+    exit 1
+elif [[ -z ${SERVER_NAME} ]];then
+    echo "I need a SERVER_NAME"
+    exit 1
 fi
 
 MYDIR=$( dirname $(readlink -f $0))
@@ -60,25 +64,24 @@ function _scmd () {
     type=$1
     shift
     cmd=$@
-    
+
     if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
-       cmd=${cmd/$DISTRO@$SERVER_NAME/$DISTRO@$JUMP_HOST_TARGET_IP}
+       cmd=${cmd/$CLOUD_USER@$SERVER_NAME/$CLOUD_USER@$JUMP_HOST_TARGET_IP}
     fi
     if [[ -n ${JUMP_HOST} ]];then
-        ${type} -o ProxyCommand="ssh -W %h:%p ${JUMP_USER:-${DISTRO}}@${JUMP_HOST}" ${cmd}
+        ${type} -o ProxyCommand="ssh -W %h:%p ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST}" ${cmd}
     else
         ${type} ${cmd}
     fi
 }
 
-_scmd scp ${proxy_command} bootstrap.sh upvm.sh bootstrap-pre.sh ${DISTRO}@${SERVER_NAME}:/tmp/
-_scmd ssh -t ${DISTRO}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
-_scmd ssh -t stack@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
+_scmd scp ${proxy_command} bootstrap.sh upvm.sh bootstrap-pre.sh ${CLOUD_USER}@${SERVER_NAME}:/tmp/
+_scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
+_scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
 
-_scmd scp -q ${MYDIR}/functions.zsh stack@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
-_scmd scp -q ${MYDIR}/bin/* stack@${SERVER_NAME}:bin/
+_scmd scp -q ${MYDIR}/functions.zsh ${CLOUD_USER}@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
 
-if [[ ${OPENSTACK_SETUP} == "yes" ]]; then 
-    _scmd scp -q ${MYDIR}/local* stack@${SERVER_NAME}:devstack/
-    _scmd ssh stack@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
+if [[ ${OPENSTACK_SETUP} == "yes" ]]; then
+    _scmd scp -q ${MYDIR}/local* ${CLOUD_USER}@${SERVER_NAME}:devstack/
+    _scmd ssh ${CLOUD_USER}@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
 fi
