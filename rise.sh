@@ -59,10 +59,15 @@ done
 function _scmd () {
     type=$1
     shift
+    cmd=$@
+    
+    if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
+       cmd=${cmd/$DISTRO@$SERVER_NAME/$DISTRO@$JUMP_HOST_TARGET_IP}
+    fi
     if [[ -n ${JUMP_HOST} ]];then
-        ${type} -o ProxyCommand="ssh -W %h:%p ${JUMP_USER:-${DISTRO}}@${JUMP_HOST}" $@
+        ${type} -o ProxyCommand="ssh -W %h:%p ${JUMP_USER:-${DISTRO}}@${JUMP_HOST}" ${cmd}
     else
-        ${type} $@
+        ${type} ${cmd}
     fi
 }
 
