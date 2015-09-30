@@ -1,6 +1,5 @@
 #!/bin/bash
 set -x
-DISTRO=${1:-ubuntu}
 OPENSTACK_SETUP=${OPENSTACK_SETUP:-yes}
 REPOS="openstack-infra/git-review nova heat python-heatclient
        openstack/heat-templates
@@ -19,7 +18,7 @@ gists=(
     ["ks"]="5001515 ks.sh"
     ["ks3"]="5303094 ks3.py"
     ["ksas"]="4985787 keystone-to-swift-as-another-user.sh"
-    ["git-browse"]="5755303 git-browse.sh"
+    ["git-browse"]="5755303 git-browse-gh"
     ["git-jenkins-error"]="8195145 git-jenkins-error.py"
 )
 
