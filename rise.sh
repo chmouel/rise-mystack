@@ -6,6 +6,7 @@ set -e
 
 function readlink { [[ $1 == "-f" ]] && shift; [[ -z $1 ]] && return;python -c 'import os,sys;print os.path.realpath(sys.argv[1])' $1 ;}
 
+CONFIG_FILE=$1
 PUBLIC_IP=46.231.128.140
 FLAVOR_ID=4
 MAX_WAIT=30
@@ -15,15 +16,19 @@ SERVER_NAME=devstack.chmouel.com
 CLOUD_USER=fedora
 OPENSTACK_SETUP=no
 
-[[ -n $1 && -e $1 ]] && source $1
+source ${CONFIG_FILE}
 
 if [[ -z ${IMAGE_NAME} ]];then
     echo "I need a IMAGE_NAME"
+    exit 1
+elif [[ -z ${CONFIG_FILE} ]];then
+    echo "I need a configuration file"
     exit 1
 elif [[ -z ${SERVER_NAME} ]];then
     echo "I need a SERVER_NAME"
     exit 1
 fi
+
 
 MYDIR=$( dirname $(readlink -f $0))
 NOVA_BIN=${HOME}/bin/novaeno
@@ -84,6 +89,13 @@ _scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} bash /tmp/bootstrap-pre.sh
 _scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_POOL=${RHEL_POOL} RHEL_PASSWORD=${RHEL_PASSWORD} OPENSTACK_SETUP=${OPENSTACK_SETUP};bash -x /tmp/bootstrap.sh && sudo -E bash -x /tmp/upvm.sh"
 
 _scmd scp -q ${MYDIR}/functions.zsh ${CLOUD_USER}@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
+
+[[ -n ${LOCAL_SCRIPT} && -f $(dirname ${CONFIG_FILE})/${LOCAL_SCRIPT} ]] && LOCAL_SCRIPT=$(dirname ${CONFIG_FILE})/${LOCAL_SCRIPT} 
+
+if [[ -n ${LOCAL_SCRIPT} && -f ${LOCAL_SCRIPT} ]];then
+    _scmd scp -q ${LOCAL_SCRIPT} ${CLOUD_USER}@${SERVER_NAME}:/tmp/.local
+    _scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} "chmod +x /tmp/.local;/tmp/.local"
+fi
 
 if [[ ${OPENSTACK_SETUP} == "yes" ]]; then
     _scmd scp -q ${MYDIR}/openstack/local* ${CLOUD_USER}@${SERVER_NAME}:devstack/
