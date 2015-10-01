@@ -56,9 +56,13 @@ function rebuild_server() {
 }
 [[ -z ${SKIP_REBUILD} ]] && rebuild_server
 
-for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${PUBLIC_IP};do
+for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${JUMP_HOST_TARGET_IP} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
 done
+
+if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
+     ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "ssh-keygen -f ~/.ssh/known_hosts -R ${JUMP_HOST_TARGET_IP}"
+fi
 
 function _scmd () {
     type=$1
@@ -82,6 +86,6 @@ _scmd ssh -t ${CLOUD_USER}@${SERVER_NAME} "export RHEL_USER=${RHEL_USER} RHEL_PO
 _scmd scp -q ${MYDIR}/functions.zsh ${CLOUD_USER}@${SERVER_NAME}:.shell/hosts/${SHORT_SERVER_NAME}.sh
 
 if [[ ${OPENSTACK_SETUP} == "yes" ]]; then
-    _scmd scp -q ${MYDIR}/local* ${CLOUD_USER}@${SERVER_NAME}:devstack/
+    _scmd scp -q ${MYDIR}/openstack/local* ${CLOUD_USER}@${SERVER_NAME}:devstack/
     _scmd ssh ${CLOUD_USER}@${SERVER_NAME} '[[ -e /usr/bin/autojump ]] || exit;mkdir -p ~/.local/share/autojump;for i in /opt/stack/*;do autojump -a $i;done'
 fi
