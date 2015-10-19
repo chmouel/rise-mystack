@@ -66,7 +66,7 @@ for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${JUMP_HOST_TARGET_IP} ${PUBLIC_IP}
 done
 
 if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
-     ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "ssh-keygen -f ~/.ssh/known_hosts -R ${JUMP_HOST_TARGET_IP}"
+     ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "for x in ${JUMP_HOST_TARGET_IP} ${SERVER_NAME} ${PUBLIC_IP}; do ssh-keygen -f ~/.ssh/known_hosts -R \$x;done"
 fi
 
 function _scmd () {
