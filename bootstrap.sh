@@ -7,6 +7,11 @@ set -e
 
 sudo sed -i '/^%\(wheel\|sudo\)/ { s/ALL$/NOPASSWD: ALL/ }' /etc/sudoers
 
+# Don't use DNS for ssh
+sudo sed -i -e 's/^#UseDNS/UseDNS/' -e "/UseDNS/ { s/no/yes/ ;}" /etc/ssh/sshd_config
+
+type -p systemctl >/dev/null && sudo systemctl restart sshd
+
 function debianies () {
     version=$(lsb_release -c -s)
     sudo apt-get -y install locales
@@ -108,3 +113,4 @@ alias g="git grep"
 
 export LESS="-r"
 EOF
+
