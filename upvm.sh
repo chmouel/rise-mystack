@@ -14,12 +14,7 @@ RPM_PACKAGES="bash-completion autojump-zsh git-review ipython htop libxslt-devel
 
 declare -A gists
 gists=(
-    ["setup-swift-keystone-functional-test.sh"]="5782804 swift-setup-for-keystone-function-test.sh"
-    ["ks"]="5001515 ks.sh"
-    ["ks3"]="5303094 ks3.py"
-    ["ksas"]="4985787 keystone-to-swift-as-another-user.sh"
     ["git-browse"]="5755303 git-browse-gh"
-    ["git-jenkins-error"]="8195145 git-jenkins-error.py"
 )
 
 set -e
@@ -28,6 +23,13 @@ RPMI=""
 
 # checkout repos.
 if [[ -n ${OPENSTACK_SETUP} && ${OPENSTACK_SETUP} == "yes" ]];then
+    gists+=(
+        ["setup-swift-keystone-functional-test.sh"]="5782804 swift-setup-for-keystone-function-test.sh"
+        ["ks"]="5001515 ks.sh"
+        ["ks3"]="5303094 ks3.py"
+        ["ksas"]="4985787 keystone-to-swift-as-another-user.sh"
+        ["git-jenkins-error"]="8195145 git-jenkins-error.py"
+    )
     mkdir -p /opt/stack
     cd /opt/stack
     for repo in $REPOS;do
