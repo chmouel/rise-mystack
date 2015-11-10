@@ -7,7 +7,6 @@ set -e
 function readlink { [[ $1 == "-f" ]] && shift; [[ -z $1 ]] && return;python -c 'import os,sys;print os.path.realpath(sys.argv[1])' $1 ;}
 
 CONFIG_FILE=$1
-PUBLIC_IP=46.231.128.140
 FLAVOR_ID=4
 MAX_WAIT=30
 SSH_KEY_NAME=Chmouel
@@ -40,8 +39,10 @@ function create_server() {
     ${NOVA_BIN} boot --poll --key-name ${SSH_KEY_NAME} --flavor=${FLAVOR_ID} --image=${IMAGE_ID} \
         --security-groups default ${SERVER_NAME}
     sleep 1
-    ${NOVA_BIN} remove-floating-ip ${SERVER_NAME} ${PUBLIC_IP} || :
-    ${NOVA_BIN} add-floating-ip ${SERVER_NAME} ${PUBLIC_IP}
+    if [[ -n ${PUBLIC_IP} ]];then
+        ${NOVA_BIN} remove-floating-ip ${SERVER_NAME} ${PUBLIC_IP} || :
+        ${NOVA_BIN} add-floating-ip ${SERVER_NAME} ${PUBLIC_IP}
+    fi
 }
 
 function rebuild_server() {
@@ -66,7 +67,7 @@ for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${JUMP_HOST_TARGET_IP} ${PUBLIC_IP}
 done
 
 if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
-     ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "for x in ${JUMP_HOST_TARGET_IP} ${SERVER_NAME} ${PUBLIC_IP}; do ssh-keygen -f ~/.ssh/known_hosts -R \$x;done"
+     ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "[[ -e ~/.ssh/known_hosts ]] || exit 0;for x in ${JUMP_HOST_TARGET_IP} ${SERVER_NAME} ${PUBLIC_IP}; do ssh-keygen -f ~/.ssh/known_hosts -R \$x;done"
 fi
 
 function _scmd () {
