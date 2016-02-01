@@ -56,8 +56,7 @@ function readties() {
             --enable="rhel-7-server-rpms" \
             --enable="rhel-7-server-extras-rpms" \
             --enable="rhel-7-server-optional-rpms" \
-            --enable="rhel-7-server-ose-3.0-rpms" \
-            --enable="rhel-7-server-htb-rpms"
+            --enable="rhel-7-server-ose-3.1-rpms"
     fi
 
     if [[ -e /etc/yum.conf ]];then
