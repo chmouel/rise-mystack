@@ -36,6 +36,12 @@ function debianies () {
 }
 
 function readties() {
+    set +e
+    sudo subscription-manager identity 2>/dev/null >/dev/null
+    ret=$?
+    set -e
+    [[ ${ret} == 0 && -z ${RHEL_SKIP_REG} ]] && RHEL_SKIP_REG=1
+
     if [[ -z $RHEL_SKIP_REG && -e /usr/bin/subscription-manager ]];then
         if [[ -n ${RHEL_USER} && -n ${RHEL_PASSWORD} ]];then
             sudo subscription-manager register --user ${RHEL_USER} \
