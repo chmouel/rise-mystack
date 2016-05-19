@@ -108,12 +108,20 @@ vim +PluginInstall +qall || true
 
 echo -e "#\n#hostColor=\"yellow\"\n#userColor=\"yellow\"\n" > ~/.shell/hosts/${HOSTNAME%%.*}.sh
 
+if [[ -e /etc/yum.conf ]];then
+    INST="yum"
+elif [[ -e /usr/bin/apt-get ]];then
+    INST="apt-get"
+else
+    INST="dnf"
+fi
+
 cat <<EOF>~/.shell/hosts/${HOSTNAME%%.*}.sh
 # hostColor="yellow"
 # userColor="white"
 
-alias inst="sudo yum -y install"
-alias remove="sudo yum -y remove"
+alias inst="sudo $INST -y install"
+alias remove="sudo $INST -y remove"
 alias g="git grep"
 
 export LESS="-r"
