@@ -84,7 +84,7 @@ elif [[ -e /usr/bin/yum ]];then
 fi
 
 
-sudo chsh -s /bin/zsh $USER
+sudo usermod -s /bin/zsh $USER
 
 cd $HOME
 mkdir -p GIT
