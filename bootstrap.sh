@@ -106,7 +106,7 @@ ln -fs GIT/vim-config ~/.vim
 
 vim +PluginInstall +qall || true
 
-echo -e "#\n#hostColor=\"yellow\"\n#userColor=\"white\"\n" > ~/.shell/hosts/${HOSTNAME%%.*}.sh
+echo -e "#\n#hostColor=\"yellow\"\n#userColor=\"yellow\"\n" > ~/.shell/hosts/${HOSTNAME%%.*}.sh
 
 cat <<EOF>~/.shell/hosts/${HOSTNAME%%.*}.sh
 # hostColor="yellow"
