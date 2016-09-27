@@ -61,9 +61,19 @@ function rebuild_server() {
 }
 [[ -z ${SKIP_REBUILD} ]] && rebuild_server
 
+[[ ${JUMP_HOST_TARGET_IP} == discover ]] && {
+    discovered=$(openstack server show -c addresses -f value ${SERVER_NAME})
+    [[ ${discovered} == *,* ]] && {
+        echo "${SERVER_NAME} has multiple IP this is not supported for discovery"
+        exit 1
+    }
+    JUMP_HOST_TARGET_IP=${discovered#*=}
+}
+
 for x in ${SERVER_NAME} ${SHORT_SERVER_NAME} ${JUMP_HOST_TARGET_IP} ${PUBLIC_IP};do
     ssh-keygen -f "${HOME}/.ssh/known_hosts" -R $x
 done
+
 
 if [[ -n ${JUMP_HOST_TARGET_IP} ]];then
      ssh ${JUMP_USER:-${CLOUD_USER}}@${JUMP_HOST} "[[ -e ~/.ssh/known_hosts ]] || exit 0;for x in ${JUMP_HOST_TARGET_IP} ${SERVER_NAME} ${PUBLIC_IP}; do ssh-keygen -f ~/.ssh/known_hosts -R \$x;done"
