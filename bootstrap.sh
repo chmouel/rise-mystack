@@ -1,7 +1,7 @@
 #!/bin/bash
 # sudo apt-get -y install curl  && bash  <(curl http://www.chmouel.com/pub/bootstrap.sh)
-export DEB_PACKAGES="vim tmux screen git-core exuberant-ctags  zsh-beta ack-grep"
-export RPM_PACKAGES="vim tmux git zsh ack deltarpm"
+export DEB_PACKAGES="vim tmux git zsh"
+export RPM_PACKAGES="vim tmux git zsh"
 export DEBIAN_FRONTEND=noninteractive
 set -e
 
